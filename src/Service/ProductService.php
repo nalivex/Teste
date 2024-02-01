@@ -33,7 +33,7 @@ class ProductService
     {
         $stm = $this->pdo->prepare("
             SELECT *
-            FROM product
+            FROM product p
             WHERE id = {$id}
         ");
         $stm->execute();

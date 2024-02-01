@@ -29,13 +29,12 @@ class CategoryService
 
     public function getOne($adminUserId, $categoryId)
     {
-        $query = "
-            SELECT *
-            FROM category c
-            WHERE c.active = 1
-            AND c.company_id = {$this->getCompanyFromAdminUser($adminUserId)}
-            AND c.id = {$categoryId}
-        ";
+				$query = "
+				SELECT *
+				FROM category c
+				WHERE c.active = 1
+				AND c.id = {$categoryId}
+		";
 
         $stm = $this->pdo->prepare($query);
 
