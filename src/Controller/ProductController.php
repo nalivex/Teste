@@ -5,6 +5,7 @@ namespace Contatoseguro\TesteBackend\Controller;
 use Contatoseguro\TesteBackend\Model\Product;
 use Contatoseguro\TesteBackend\Service\CategoryService;
 use Contatoseguro\TesteBackend\Service\ProductService;
+use PDO;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -20,13 +21,30 @@ class ProductController
     }
 
     public function getAll(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
-    {
-        $adminUserId = $request->getHeader('admin_user_id')[0];
-        
-        $stm = $this->service->getAll($adminUserId);
-        $response->getBody()->write(json_encode($stm->fetchAll()));
-        return $response->withStatus(200);
-    }
+		{
+		    $adminUserId = $request->getHeader('admin_user_id')[0];
+		    $queryParams = $request->getQueryParams();
+		    $activeFilter = isset($queryParams['active']) ? $queryParams['active'] : null;
+		
+		    $stm = $this->service->getAll($adminUserId);
+		
+		    if ($activeFilter !== null) {
+		        $filteredProducts = $stm->fetchAll(PDO::FETCH_ASSOC);
+		        $filteredProducts = array_filter($filteredProducts, function ($product) use ($activeFilter) {
+		        
+		            return $product['active'] == $activeFilter;
+		            
+		        });
+		
+		        $response->getBody()->write(json_encode(array_values($filteredProducts)));
+		    } else {
+		    
+		        $response->getBody()->write(json_encode($stm->fetchAll()));
+		    }
+		
+		    return $response->withStatus(200);
+		}
+
 
     public function getOne(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
