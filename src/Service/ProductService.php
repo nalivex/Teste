@@ -12,22 +12,35 @@ class ProductService
         $this->pdo = DB::connect();
     }
 
-    public function getAll($adminUserId)
-    {
-        $query = "
-            SELECT p.*, c.title as category
-            FROM product p
-            INNER JOIN product_category pc ON pc.product_id = p.id
-            INNER JOIN category c ON c.id = pc.cat_id
-            WHERE p.company_id = {$adminUserId}
-        ";
+    public function getAll($adminUserId, $activeFilter = null, $categoryFilter = null, $orderBy = null)
+		{
+		    $query = "
+		        SELECT p.*, c.title as category
+		        FROM product p
+		        INNER JOIN product_category pc ON pc.product_id = p.id
+		        INNER JOIN category c ON c.id = pc.cat_id
+		        WHERE p.company_id = {$adminUserId}
+		    ";
+		
+		    if ($activeFilter !== null) {
+		        $query .= " AND p.active = {$activeFilter}";
+		    }
+		
+		    if ($categoryFilter !== null) {
+		        $categoryFilter = $this->pdo->quote($categoryFilter);
+		        $query .= " AND c.title = {$categoryFilter}";
+		    }
+		
+		    if ($orderBy !== null) {
+		        $query .= " ORDER BY p.created_at " . ($orderBy === 'asc' ? 'ASC' : 'DESC');
+		    }
+		
+		    $stm = $this->pdo->prepare($query);
+		    $stm->execute();
+		
+		    return $stm;
+		}
 
-        $stm = $this->pdo->prepare($query);
-
-        $stm->execute();
-
-        return $stm;
-    }
 
     public function getOne($id)
     {

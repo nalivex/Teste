@@ -64,7 +64,7 @@ Para a listagem de produtos:
 
 - [X] Gostaria de poder filtrar os produtos ativos e inativos;
 - [X] Gostaria de poder filtrar os produtos por categoria;
-- [ ] Gostaria de poder ordenar os produtos por data de cadastro.
+- [x] Gostaria de poder ordenar os produtos por data de cadastro.
 
 ### Relatório
 
