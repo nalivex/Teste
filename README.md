@@ -63,7 +63,7 @@ Abaixo, as solicitações do cliente:
 Para a listagem de produtos:
 
 - [X] Gostaria de poder filtrar os produtos ativos e inativos;
-- [ ] Gostaria de poder filtrar os produtos por categoria;
+- [X] Gostaria de poder filtrar os produtos por categoria;
 - [ ] Gostaria de poder ordenar os produtos por data de cadastro.
 
 ### Relatório

@@ -25,25 +25,34 @@ class ProductController
 		    $adminUserId = $request->getHeader('admin_user_id')[0];
 		    $queryParams = $request->getQueryParams();
 		    $activeFilter = isset($queryParams['active']) ? $queryParams['active'] : null;
+		    $categoryFilter = isset($queryParams['category']) ? $queryParams['category'] : null;
+		
+		    $filteredProducts = [];
 		
 		    $stm = $this->service->getAll($adminUserId);
 		
-		    if ($activeFilter !== null) {
-		        $filteredProducts = $stm->fetchAll(PDO::FETCH_ASSOC);
-		        $filteredProducts = array_filter($filteredProducts, function ($product) use ($activeFilter) {
-		        
-		            return $product['active'] == $activeFilter;
-		            
-		        });
+		    if ($categoryFilter !== null) {
+		        $products = $stm->fetchAll(PDO::FETCH_ASSOC);
 		
-		        $response->getBody()->write(json_encode(array_values($filteredProducts)));
+		        foreach ($products as $product) {
+		            if ($product['category'] == $categoryFilter) {
+		                $filteredProducts[] = $product;
+		            }
+		        }
 		    } else {
-		    
-		        $response->getBody()->write(json_encode($stm->fetchAll()));
+		        $filteredProducts = $stm->fetchAll(PDO::FETCH_ASSOC);
 		    }
 		
+		    if ($activeFilter !== null) {
+		        $filteredProducts = array_filter($filteredProducts, function ($product) use ($activeFilter) {
+		            return $product['active'] == $activeFilter;
+		        });
+		    }
+		
+		    $response->getBody()->write(json_encode(array_values($filteredProducts)));
 		    return $response->withStatus(200);
 		}
+
 
 
     public function getOne(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
