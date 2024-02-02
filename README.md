@@ -68,7 +68,7 @@ Para a listagem de produtos:
 
 ### Relatório
 
-- [ ] O relatório não está mostrando a coluna de logs corretamente, se possível, gostaria de trazer no seguinte formato:
+- [X] O relatório não está mostrando a coluna de logs corretamente, se possível, gostaria de trazer no seguinte formato:
   (Nome do usuário, Tipo de alteração e Data),
   (Nome do usuário, Tipo de alteração e Data),
   (Nome do usuário, Tipo de alteração e Data)
