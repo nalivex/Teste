@@ -38,16 +38,16 @@ class ReportController
     $products = $stm->fetchAll();
 
     foreach ($products as $i => $product) {
-        $stm = $this->companyService->getNameById($product->company_id);
-        $companyName = $stm->fetch()->name;
-
-        $stm = $this->productService->getLog($product->id);
-        $productLogs = $stm->fetchAll(PDO::FETCH_ASSOC);
-
-        $formattedLogs = [];
-        foreach ($productLogs as $log) {
-            $formattedLogs[] = "({$log['admin_user']}, {$log['action']}, {$log['timestamp']})";
-        }
+			$stm = $this->companyService->getNameById($product->company_id);
+			$companyName = $stm->fetch()->name;
+			
+			$stm = $this->productService->getLog($product->id);
+			$productLogs = $stm->fetchAll(PDO::FETCH_ASSOC);
+			
+			$formattedLogs = [];
+			foreach ($productLogs as $log) {
+				$formattedLogs[] = "({$log['name']}, {$log['action']}, {$log['timestamp']})";
+      }
 
         $data[$i+1][] = $product->id;
         $data[$i+1][] = $companyName;
