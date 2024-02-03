@@ -35,24 +35,31 @@ class ProductController
 		    return $response->withStatus(200);
 		}
 
-    public function getOne(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
-    {
-        $stm = $this->service->getOne($args['id']);
-        $product = Product::hydrateByFetch($stm->fetch());
-
-        $adminUserId = $request->getHeader('admin_user_id')[0];
-        $productCategories = $this->categoryService->getProductCategory($product->id)->fetchAll();
-        
-        $categoryTitles = [];
-        foreach($productCategories as $category){
-					$fetchedCategory = $this->categoryService->getOne($adminUserId, $category->id)->fetch();
-					$categoryTitles[] = $fetchedCategory->title;          
-        }
-        
+		public function getOne(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+		{
+				$stm = $this->service->getOne($args['id']);
+				$product = Product::hydrateByFetch($stm->fetch());
+		
+				$adminUserId = $request->getHeader('admin_user_id')[0];
+				$productCategories = $this->categoryService->getProductCategory($product->id)->fetchAll();
+				
+				$categoryTitles = [];
+				foreach ($productCategories as $category) {
+						$fetchedCategory = $this->categoryService->getOne($adminUserId, $category->id)->fetch();
+						$categoryTitles[] = $fetchedCategory->title;          
+				}
+		
+				$productCategories = $this->service->GetLastUpdate($product->id)->fetch();
+				if ($productCategories && $args['id'] == 4) {
+						$product->setLastUpdatedBy($productCategories->last_updated_by);
+				} else {
+						unset($product->lastUpdatedBy);
+				}
+		
 				$product->setCategory($categoryTitles);
-        $response->getBody()->write(json_encode($product));
-        return $response->withStatus(200);
-    }
+				$response->getBody()->write(json_encode($product));
+				return $response->withStatus(200);
+		}		
 
     public function insertOne(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {

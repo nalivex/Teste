@@ -79,7 +79,7 @@ Para a listagem de produtos:
 
 ### Logs
 
-- [ ] Gostaria de saber qual usuário mudou o preço do produto `iphone 8` por último.
+- [X] Gostaria de saber qual usuário mudou o preço do produto `iphone 8` por último.
 
 ### Extra
 
@@ -96,3 +96,4 @@ Boa sorte! :)
 ## Suas Respostas, Duvidas e Observações
 
 [Adicione  aqui suas respostas, dúvidas e observações]
+Ao acionar o último usuário que modificou o preço, decidi incorporar uma melhoria no método GetOnly do produto. Adicionei um novo campo denominado `lastUpdateBy`, o qual será exibido exclusivamente quando o produto em questão for o `iphone 8`.

@@ -177,4 +177,20 @@ class ProductService
 
         return $stm;
     }
+    
+    public function GetLastUpdate($id)
+    {
+        $stm = $this->pdo->prepare("
+				SELECT p.*, a.name as last_updated_by
+        FROM product p
+        LEFT JOIN product_log pl ON p.id = pl.product_id
+        LEFT JOIN admin_user a ON a.id = pl.admin_user_id
+        WHERE p.id = {$id}
+        ORDER BY pl.timestamp DESC
+        LIMIT 1
+        ");
+        $stm->execute();
+
+        return $stm;
+    }
 }

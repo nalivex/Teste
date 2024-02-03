@@ -6,6 +6,7 @@ class Product
 {
 
     public $category;
+    public $lastUpdatedBy;
 
     public function __construct(
         public int $id,
@@ -32,5 +33,10 @@ class Product
     public function setCategory($category)
     {
         $this->category = $category;
+    }
+    
+    public function setLastUpdatedBy($lastUpdatedBy)
+    {
+        $this->lastUpdatedBy = $lastUpdatedBy;
     }
 }
